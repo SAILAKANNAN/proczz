@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTR</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="admin-container">
+    <h1>UTR Numbers</h1>
+    <a href="/admin" class="back-btn">← Back to Admin</a>
+    <form id="utrForm">
+      <div class="form-group">
+        <label for="utrNumber">UTR Number</label>
+        <input type="text" id="utrNumber" name="utrNumber" required>
+      </div>
+      <button type="submit" class="btn">Add UTR</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>UTR Number</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% utrs.forEach(utr => { %>
+          <tr>
+            <td><%= utr.utrNumber %></td>
+            <td><%= new Date(utr.createdAt).toLocaleString() %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <script src="/admin.js"></script>
+</body>
+</html>

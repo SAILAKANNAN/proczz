@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdrawal</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="admin-container">
+    <h1>Withdrawal Requests</h1>
+    <a href="/admin" class="back-btn">← Back to Admin</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Phone</th>
+          <th>Amount</th>
+          <th>QR Code</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% withdrawals.forEach(withdrawal => { %>
+          <tr>
+            <td><%= withdrawal.phone %></td>
+            <td>₹<%= withdrawal.amount %></td>
+            <td>
+              <% if (withdrawal.qrImage) { %>
+                <img src="<%= withdrawal.qrImage %>" alt="QR Code" width="100">
+              <% } %>
+            </td>
+            <td><%= withdrawal.status %></td>
+            <td><%= new Date(withdrawal.createdAt).toLocaleString() %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

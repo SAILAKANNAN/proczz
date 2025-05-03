@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Management</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary-color: #10b981;
+      --danger-color: #ef4444;
+      --background-color: #f9fafb;
+      --card-bg: #ffffff;
+      --text-color: #111827;
+      --light-text: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: var(--light-text);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: var(--primary-color);
+      font-size: 22px;
+      margin: 30px 0 15px;
+      font-weight: 600;
+    }
+
+    .back-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      white-space: nowrap;
+    }
+
+    .back-button:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .back-button:active {
+      transform: translateY(0);
+    }
+
+    .form-container {
+      background-color: var(--card-bg);
+      padding: 25px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: var(--background-color);
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(79, 70, 229, 0.05);
+    }
+
+    tr:hover {
+      background-color: rgba(79, 70, 229, 0.1);
+    }
+
+    .qr-image {
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease;
+    }
+
+    .qr-image:hover {
+      transform: scale(1.05);
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .delete-btn {
+      background-color: var(--danger-color);
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 30px;
+      color: var(--light-text);
+      font-size: 16px;
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 20px;
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      .back-button, .btn {
+        padding: 10px 18px;
+        font-size: 15px;
+      }
+
+      th, td {
+        padding: 12px 8px;
+      }
+
+      .qr-image {
+        max-width: 100px;
+        max-height: 100px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .back-button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      th, td {
+        font-size: 13px;
+        padding: 10px 5px;
+      }
+
+      .action-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .qr-image {
+        max-width: 80px;
+        max-height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h2>QR Code Management</h2>
+        <p class="subtitle">Upload and manage payment QR codes</p>
+      </div>
+      <button class="back-button" onclick="window.history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back
+      </button>
+    </div>
+
+    <form action="/admin/qr" method="POST" enctype="multipart/form-data" class="form-container">
+      <div class="form-group">
+        <label for="qrImage">Upload QR Code Image</label>
+        <input type="file" id="qrImage" name="qrImage" accept="image/*" required>
+      </div>
+      <button type="submit" class="btn">Upload QR Code</button>
+    </form>
+
+    <h3>Existing QR Codes</h3>
+    <% if (qrCodes && qrCodes.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>QR Code</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% qrCodes.forEach(qr => { %>
+            <tr>
+              <td>
+                <img src="data:<%= qr.contentType %>;base64,<%= qr.image %>" 
+                     alt="QR Code" class="qr-image">
+              </td>
+              <td><%= new Date(qr.createdAt).toLocaleString() %></td>
+              <td>
+                <form action="/admin/qr/delete/<%= qr._id %>" method="POST" style="display: inline;">
+                  <button type="submit" class="action-btn delete-btn">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="no-data">
+        <p>No QR codes found. Upload your first QR code above.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <script>
+    // Add any JavaScript functionality here if needed
+  </script>
+</body>
+</html>

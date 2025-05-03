@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .back-btn {
+      padding: 8px 16px;
+      background-color: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: #3a5a80;
+      transform: translateY(-1px);
+    }
+
+    /* Table Container */
+    .user-management {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    /* Table Styles */
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .user-table thead {
+      background-color: #4a6fa5;
+      color: white;
+      position: sticky;
+      top: 0;
+    }
+
+    .user-table th {
+      padding: 16px 12px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .user-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .user-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .user-table tr:hover {
+      background-color: #f1f5fe;
+    }
+
+    /* Status Badges */
+    .admin-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .admin-yes {
+      background-color: #e3f9e5;
+      color: #1b7052;
+    }
+
+    .admin-no {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    /* Action Buttons */
+    .action-form {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .action-input {
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      width: 80px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .action-input:focus {
+      outline: none;
+      border-color: #4a6fa5;
+      box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .add-btn {
+      background-color: #4a6fa5;
+      color: white;
+    }
+
+    .add-btn:hover {
+      background-color: #3a5a80;
+      transform: translateY(-1px);
+    }
+
+    .delete-btn {
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fee2e2;
+    }
+
+    .delete-btn:hover {
+      background-color: #fee2e2;
+      transform: translateY(-1px);
+    }
+
+    /* Balance Styling */
+    .balance-amount {
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #f8fafc;
+      border-radius: 10px;
+      margin: 20px 0;
+      color: #64748b;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: #cbd5e1;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .user-table {
+        display: block;
+        box-shadow: none;
+      }
+
+      .user-table thead {
+        display: none;
+      }
+
+      .user-table tbody, .user-table tr, .user-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .user-table tr {
+        margin-bottom: 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .user-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #f1f5f9;
+        position: relative;
+        padding-left: 45%;
+      }
+
+      .user-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        width: 40%;
+        font-weight: 600;
+        color: #64748b;
+      }
+
+      .action-form {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .action-input {
+        width: 100%;
+      }
+
+      .action-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .user-table td {
+        padding-left: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>User Management</h2>
+    <a href="/admin" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <div class="user-management">
+    <% if (users && users.length > 0) { %>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Phone</th>
+            <th>Name</th>
+            <th>Balance</th>
+            <th>Admin</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td data-label="Phone"><%= user.phone %></td>
+              <td data-label="Name"><%= user.name %></td>
+              <td data-label="Balance" class="balance-amount">₹<%= user.balance.toFixed(2) %></td>
+              <td data-label="Admin">
+                <span class="admin-badge <%= user.isAdmin ? 'admin-yes' : 'admin-no' %>">
+                  <%= user.isAdmin ? 'Yes' : 'No' %>
+                </span>
+              </td>
+              <td data-label="Created At"><%= new Date(user.createdAt).toLocaleString() %></td>
+              <td data-label="Actions">
+                <div class="action-group">
+                  <form action="/admin/users/add-balance" method="POST" class="action-form">
+                    <input type="hidden" name="userId" value="<%= user._id %>">
+                    <input type="number" name="amount" min="0" step="0.01" required class="action-input">
+                    <button type="submit" class="action-btn add-btn">Add</button>
+                  </form>
+                  <form action="/admin/users/delete" method="POST" class="action-form">
+                    <input type="hidden" name="userId" value="<%= user._id %>">
+                    <button type="submit" class="action-btn delete-btn">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="empty-state">
+        <div class="empty-icon">👤</div>
+        <h3>No Users Found</h3>
+        <p>There are currently no users registered in the system.</p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary-color: #10b981;
+      --danger-color: #ef4444;
+      --background-color: #f9fafb;
+      --card-bg: #ffffff;
+      --text-color: #111827;
+      --light-text: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .user-home {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    h1 {
+      color: var(--primary-color);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .balance-card {
+      background-color: var(--card-bg);
+      padding: 25px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+
+    .balance-card h3 {
+      color: var(--light-text);
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .balance-amount {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn-large {
+      padding: 15px 30px;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .withdraw-btn {
+      background-color: var(--danger-color);
+      color: white;
+    }
+
+    .deposit-btn {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .action-btn-large:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .action-btn-large:active {
+      transform: translateY(0);
+    }
+
+    .plans-container {
+      margin-top: 30px;
+    }
+
+    .plans-container h2 {
+      color: var(--primary-color);
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .plan-card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .plan-title {
+      color: var(--primary-color);
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .plan-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .plan-details span {
+      font-size: 16px;
+      color: var(--text-color);
+    }
+
+    .buy-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .buy-btn:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .buy-btn:active {
+      transform: translateY(0);
+    }
+
+    .special-plan {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .special-plan .plan-title,
+    .special-plan .plan-details span {
+      color: #fff;
+    }
+
+    .special-plan .buy-btn {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .code-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .timer {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+      color: var(--secondary-color);
+    }
+
+    .back-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .balance-card {
+        padding: 20px;
+      }
+
+      .balance-amount {
+        font-size: 28px;
+      }
+
+      .action-btn-large {
+        padding: 12px 24px;
+        font-size: 16px;
+        min-width: 160px;
+      }
+
+      .plan-card {
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .action-btn-large {
+        width: 100%;
+      }
+
+      .plan-title {
+        font-size: 18px;
+      }
+
+      .plan-details span {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="back-button" onclick="window.history.back()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+      Back
+    </button>
+
+    <div class="user-home">
+      <h1>Welcome, <%= user.name %></h1>
+      
+      <div class="balance-card">
+        <h3>Your Balance</h3>
+        <div class="balance-amount">₹<%= user.balance %></div>
+      </div>
+      
+      <div class="action-buttons">
+        <button onclick="window.location.href='/user/withdraw'" class="action-btn-large withdraw-btn">Withdraw</button>
+        <button onclick="window.location.href='/user/deposit'" class="action-btn-large deposit-btn">Deposit</button>
+      </div>
+      
+      <div class="plans-container">
+        <h2>Available Plans</h2>
+        
+        <!-- Special Free Plan -->
+        
+        <!-- Other Plans -->
+        <% plans.forEach(plan => { %>
+          <div class="plan-card">
+            <h3 class="plan-title">₹<%= plan.amount %> Plan</h3>
+            <div class="plan-details">
+              <span>Duration: <%= plan.duration %></span>
+              <span>Interest: <%= plan.interest %>%</span>
+              <span>Winning Amount: ₹<%= plan.winningAmount %></span>
+            </div>
+            <button class="buy-btn">Buy Now</button>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check if level one is completed (from cookie)
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const levelOneCompleted = getCookie('levelOneCompleted') === 'true';
+    
+    // Special Plan Timer Functionality
+    function startSpecialPlan() {
+      const codeInput = document.getElementById('specialCode');
+      if (codeInput.value !== '543&&') {
+        alert('Invalid code! Please enter 543&&');
+        return;
+      }
+
+      // Disable the input and button
+      codeInput.disabled = true;
+      document.querySelector('#specialPlan .buy-btn').disabled = true;
+      
+      let timeLeft = 120; // 2 minutes in seconds
+      const timerElement = document.getElementById('timer');
+      
+      const timer = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        
+        timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          timerElement.textContent = "Completed! ₹20 added to your balance";
+          
+          // Set cookie for 1 year
+          const date = new Date();
+          date.setFullYear(date.getFullYear() + 1);
+          document.cookie = `levelOneCompleted=true; expires=${date.toUTCString()}; path=/`;
+          
+          // Change the special plan appearance
+          document.getElementById('specialPlan').innerHTML = `
+            <h3 class="plan-title">FREE Plan</h3>
+            <div class="plan-details">
+              <span>Duration: 2 minutes</span>
+              <span>Interest: 0%</span>
+              <span>Winning Amount: ₹20</span>
+            </div>
+            <button class="buy-btn" disabled>Completed</button>
+          `;
+          
+          // In a real app, you would make an API call to update the balance
+          alert('Congratulations! ₹20 has been added to your balance.');
+        }
+        
+        timeLeft--;
+      }, 1000);
+    }
+
+    // If level one is already completed, update the UI
+    if (levelOneCompleted) {
+      document.getElementById('specialPlan').innerHTML = `
+        <h3 class="plan-title">FREE Plan</h3>
+        <div class="plan-details">
+          <span>Duration: 2 minutes</span>
+          <span>Interest: 0%</span>
+          <span>Winning Amount: ₹20</span>
+        </div>
+        <button class="buy-btn" disabled>Completed</button>
+      `;
+    }
+  </script>
+</body>
+</html>
+e

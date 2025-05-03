@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI ID Management</title>
+  <style>
+    :root {
+      --primary-color: #5b37b7;
+      --primary-light: #6d47d1;
+      --secondary-color: #e91e63;
+      --background-color: #f5f7fa;
+      --card-bg: #ffffff;
+      --text-color: #2d3748;
+      --light-text: #718096;
+      --border-color: #e2e8f0;
+      --success-color: #48bb78;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: var(--light-text);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: var(--primary-color);
+      font-size: 22px;
+      margin: 30px 0 15px;
+      font-weight: 600;
+    }
+
+    .back-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      white-space: nowrap;
+    }
+
+    .back-button:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .back-button:active {
+      transform: translateY(0);
+    }
+
+    .form-container {
+      background-color: var(--card-bg);
+      padding: 25px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(91, 55, 183, 0.2);
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .current-upi {
+      background-color: var(--card-bg);
+      padding: 25px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+
+    .current-upi p {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .current-upi p:first-child {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--success-color);
+    }
+
+    .current-upi p:last-child {
+      color: var(--light-text);
+      font-size: 14px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 20px;
+      }
+
+      .form-container, .current-upi {
+        padding: 20px;
+      }
+
+      .back-button, .btn {
+        padding: 10px 18px;
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .back-button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      input {
+        padding: 10px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h2>UPI ID Management</h2>
+        <p class="subtitle">Update your payment UPI ID</p>
+      </div>
+      <button class="back-button" onclick="window.history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back
+      </button>
+    </div>
+
+    <form action="/admin/upi" method="POST" class="form-container">
+      <div class="form-group">
+        <label for="upiId">New UPI ID</label>
+        <input type="text" id="upiId" name="upiId" placeholder="e.g., yourname@upi" required>
+      </div>
+      <button type="submit" class="btn">Change UPI ID</button>
+    </form>
+
+    <% if (upi) { %>
+      <h3>Current UPI ID</h3>
+      <div class="current-upi">
+        <p><%= upi.upiId %></p>
+        <p>Last updated: <%= new Date(upi.createdAt).toLocaleString() %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <script>
+    // Add any JavaScript functionality here if needed
+  </script>
+</body>
+</html>

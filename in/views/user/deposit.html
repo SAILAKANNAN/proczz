@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deposit Funds</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary-color: #10b981;
+      --background-color: #f9fafb;
+      --card-bg: #ffffff;
+      --text-color: #111827;
+      --light-text: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-container {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+
+    h3 {
+      color: var(--primary-color);
+      font-size: 20px;
+      margin: 25px 0 15px;
+      text-align: center;
+    }
+
+    .qr-image {
+      display: block;
+      max-width: 300px;
+      max-height: 300px;
+      margin: 0 auto 30px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease;
+    }
+
+    .qr-image:hover {
+      transform: scale(1.03);
+    }
+
+    p {
+      color: var(--text-color);
+      font-size: 16px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .upi-id {
+      display: inline-block;
+      background-color: var(--background-color);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-family: monospace;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin: 15px auto;
+      border: 1px dashed var(--primary-color);
+      text-align: center;
+    }
+
+    .instructions {
+      background-color: rgba(79, 70, 229, 0.05);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      margin-top: 30px;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .instructions p {
+      text-align: left;
+      color: var(--text-color);
+    }
+
+    .back-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .back-button:active {
+      transform: translateY(0);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      .qr-image {
+        max-width: 250px;
+        max-height: 250px;
+      }
+
+      .upi-id {
+        font-size: 16px;
+        padding: 10px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 22px;
+      }
+
+      .qr-image {
+        max-width: 200px;
+        max-height: 200px;
+        padding: 10px;
+      }
+
+      .upi-id {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+
+      .back-button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .instructions {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="back-button" onclick="window.history.back()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+      Back
+    </button>
+
+    <h2>Deposit Funds</h2>
+    
+    <div class="form-container">
+      <h3>Scan the QR code to deposit</h3>
+      <% if (qrCodes && qrCodes.length > 0) { %>
+        <% qrCodes.forEach(qr => { %>
+          <img src="data:<%= qr.contentType %>;base64,<%= qr.image %>" 
+               alt="Deposit QR Code" class="qr-image">
+        <% }); %>
+      <% } else { %>
+        <p>No deposit QR codes available. Please contact support.</p>
+      <% } %>
+      
+      <% if (upi) { %>
+        <h3>Or send to UPI ID</h3>
+        <div class="upi-id"><%= upi.upiId %></div>
+      <% } %>
+      
+      <div class="instructions">
+        <p><strong>Important:</strong> After making the payment, please contact support with:</p>
+        <p>1. Your registered mobile number</p>
+        <p>2. Transaction ID/UTR number</p>
+        <p>3. Deposit amount and date</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add any JavaScript functionality here if needed
+  </script>
+</body>
+</html>

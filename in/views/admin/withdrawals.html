@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdrawal Management</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .back-btn {
+      padding: 8px 16px;
+      background-color: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: #3a5a80;
+      transform: translateY(-1px);
+    }
+
+    /* Table Container */
+    .withdrawal-container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    thead {
+      background-color: #4a6fa5;
+      color: white;
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    th {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    tr:hover {
+      background-color: #f1f5fd;
+    }
+    
+    /* QR Code Styles */
+    .qr-container {
+      position: relative;
+      display: inline-block;
+      margin: 5px 0;
+    }
+    
+    .qr-image {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      transition: transform 0.3s;
+    }
+    
+    .qr-image:hover {
+      transform: scale(1.05);
+    }
+    
+    .qr-actions {
+      text-align: center;
+      margin-top: 5px;
+    }
+    
+    .download-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      background-color: #4a6fa5;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 12px;
+      transition: background-color 0.3s;
+    }
+    
+    .download-btn:hover {
+      background-color: #3a5a80;
+    }
+    
+    /* Status Badges */
+    .status-pending {
+      color: #e67e22;
+      font-weight: 600;
+    }
+    
+    .status-completed {
+      color: #27ae60;
+      font-weight: 600;
+    }
+    
+    /* Action Buttons */
+    .action-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .edit-btn {
+      background-color: #27ae60;
+      color: white;
+    }
+    
+    .edit-btn:hover {
+      background-color: #219653;
+    }
+    
+    /* Form Styles */
+    input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-right: 5px;
+      width: 120px;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: #7f8c8d;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      table {
+        display: block;
+      }
+      
+      thead, tbody, th, td, tr {
+        display: block;
+      }
+      
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+      }
+      
+      td {
+        border: none;
+        border-bottom: 1px solid #e0e0e0;
+        position: relative;
+        padding-left: 50%;
+      }
+      
+      td:before {
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        content: attr(data-label);
+      }
+      
+      .qr-container {
+        width: 100%;
+        text-align: center;
+      }
+      
+      .qr-image {
+        width: 150px;
+        height: 150px;
+      }
+      
+      .action-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      input[type="text"] {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Withdrawal Management</h2>
+    <a href="/admin" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <div class="withdrawal-container">
+    <% if (withdrawals && withdrawals.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Phone</th>
+            <th>Amount</th>
+            <th>QR Code</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% withdrawals.forEach(withdrawal => { %>
+            <tr>
+              <td data-label="User"><%= withdrawal.userId.name %></td>
+              <td data-label="Phone"><%= withdrawal.phone %></td>
+              <td data-label="Amount">₹<%= withdrawal.amount %></td>
+              <td data-label="QR Code">
+                <% if (withdrawal.qrImage) { %>
+                  <div class="qr-container">
+                    <img src="data:<%= withdrawal.contentType %>;base64,<%= withdrawal.qrImage %>" 
+                         alt="Withdrawal QR" class="qr-image">
+                    <div class="qr-actions">
+                      <a href="/admin/withdrawals/download/<%= withdrawal._id %>" 
+                         class="download-btn" 
+                         download="withdrawal_qr_<%= withdrawal.phone %>.png">
+                        Download QR
+                      </a>
+                    </div>
+                  </div>
+                <% } else { %>
+                  <span class="no-qr">No QR</span>
+                <% } %>
+              </td>
+              <td data-label="Status">
+                <span class="status-<%= withdrawal.status %>"><%= withdrawal.status %></span>
+              </td>
+              <td data-label="Created At"><%= new Date(withdrawal.createdAt).toLocaleString() %></td>
+              <td data-label="Actions">
+                <% if (withdrawal.status === 'pending') { %>
+                  <form action="/admin/utrs" method="POST" class="action-form">
+                    <input type="hidden" name="withdrawalId" value="<%= withdrawal._id %>">
+                    <input type="text" name="utrNumber" placeholder="UTR Number" required>
+                    <button type="submit" class="action-btn edit-btn">Complete</button>
+                  </form>
+                <% } else { %>
+                  <span class="completed-badge">Completed</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#7f8c8d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <h3>No Withdrawal Requests Found</h3>
+        <p>There are currently no pending withdrawal requests.</p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome <span id="userName"></span></h1>
+        <div class="balance-container">
+            <h2>Your Balance: ₹<span id="balance">0</span></h2>
+            <div class="action-buttons">
+                <button onclick="location.href='/withdraw'">Withdraw</button>
+                <button onclick="location.href='/deposit'">Deposit</button>
+            </div>
+        </div>
+        
+        <h2>Available Plans</h2>
+        <div id="plans" class="plans-container"></div>
+        
+        <button onclick="location.href='/logout'" class="logout-btn">Logout</button>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
