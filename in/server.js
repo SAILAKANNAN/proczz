@@ -5,6 +5,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+const ejs =require('ejs')
 
 const app = express();
 
@@ -30,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
-app.engine('html', require('ejs').renderFile);
+app.engine('html', ejs.renderFile);
 
 // Routes
 const authRoutes = require('./routes/auth');
